@@ -35,37 +35,39 @@ _Note: Use the [Markdown Table Generator](http://www.tablesgenerator.com/markdow
 | Name     | Function | IP Address | Operating System |
 |----------|----------|------------|------------------|
 | Jump Box | Gateway  | 10.0.0.1   | Linux            |
-| TODO     |          |            |                  |
-| TODO     |          |            |                  |
-| TODO     |          |            |                  |
+|elkstack  | hosts elk services| 10.1.0.4           | linux                  |
+| load_balancer_1    | balances connections for web-1 and web2          |    40.117.133.226        | linux                 |
+| web-1/web-2 | dvwa hosting         |  10.0.0.5/10.0.0.6          |     linux             |
 
 ### Access Policies
 
 The machines on the internal network are not exposed to the public Internet. 
 
-Only the _____ machine can accept connections from the Internet. Access to this machine is only allowed from the following IP addresses:
-- _TODO: Add whitelisted IP addresses_
+Only the jumpbox_____ machine can accept connections from the Internet. Access to this machine is only allowed from the following IP addresses:
+- my local ip address
 
-Machines within the network can only be accessed by _____.
-- _TODO: Which machine did you allow to access your ELK VM? What was its IP address?_
+Machines within the network can only be accessed by __jumpbox___.
+13.82.135.83
 
 A summary of the access policies in place can be found in the table below.
 
 | Name     | Publicly Accessible | Allowed IP Addresses |
 |----------|---------------------|----------------------|
-| Jump Box | Yes/No              | 10.0.0.1 10.0.0.2    |
-|          |                     |                      |
-|          |                     |                      |
-
+| Jump Box | Yes              | my local ip    |
+| elk          |    yes                | my local ip                |
+| load          |      yes              | my local ip                      |
+| web 1/2   | no    |      N/A   |
 ### Elk Configuration
 
 Ansible was used to automate configuration of the ELK machine. No configuration was performed manually, which is advantageous because...
-- _TODO: What is the main advantage of automating configuration with Ansible?_
+speed/ scale ability 
 
 The playbook implements the following tasks:
 - _TODO: In 3-5 bullets, explain the steps of the ELK installation play. E.g., install Docker; download image; etc._
-- ...
-- ...
+- apt module uses apt tool to install docker and pip.
+- pip module installs docker python module
+- systctl assigns more  memory to the machine.
+- downloads and launchs container
 
 The following screenshot displays the result of running `docker ps` after successfully configuring the ELK instance.
 
@@ -73,21 +75,23 @@ The following screenshot displays the result of running `docker ps` after succes
 
 ### Target Machines & Beats
 This ELK server is configured to monitor the following machines:
-- _TODO: List the IP addresses of the machines you are monitoring_
+- 10.0.0.5
+- 10.0.0.6
 
 We have installed the following Beats on these machines:
-- _TODO: Specify which Beats you successfully installed_
+- filebeat and metricbeat on web 1 and web 2.
 
 These Beats allow us to collect the following information from each machine:
-- _TODO: In 1-2 sentences, explain what kind of data each beat collects, and provide 1 example of what you expect to see. E.g., `Winlogbeat` collects Windows logs, which we use to track user logon events, etc._
-
+-filebeat takes the measure of all files and hashs/compares to find changes.
+-metricbeat takes logs
 ### Using the Playbook
 In order to use the playbook, you will need to have an Ansible control node already configured. Assuming you have such a control node provisioned: 
 
 SSH into the control node and follow the steps below:
-- Copy the _____ file to _____.
-- Update the _____ file to include...
-- Run the playbook, and navigate to ____ to check that the installation worked as expected.
+- Copy the playbook file_____ file to /etc/Ansible_____.
+- Update the _hosts____ file to include ip and python under corresponding label
+
+- Run the playbook, and navigate to __http://myipaddress:5601/app/kibana__ to check that the installation worked as expected.
 
 _TODO: Answer the following questions to fill in the blanks:_
 - _Which file is the playbook? Where do you copy it?_
